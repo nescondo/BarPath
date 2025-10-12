@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavHost
 import com.example.barpath.ui.theme.BarPathTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,11 +24,12 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             BarPathTheme {
-                Scaffold(modifier = Modifier.fillMaxSize(),
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         BottomNav()
                     }) { innerPadding ->
-                    Header()
+                    MainScreen()
                 }
             }
         }
