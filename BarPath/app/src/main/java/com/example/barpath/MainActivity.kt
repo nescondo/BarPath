@@ -39,7 +39,9 @@ class MainActivity : ComponentActivity() {
                         composable<Route.MainScreen> {
                             MainScreen(mainScreenViewModel,
                                 onSettingsClick = { nc.navigate(Route.SettingsScreen) },
-                                onPictureClick = {nc.navigate(Route.PictureScreen)}
+                                onPictureClick = {nc.navigate(Route.PictureScreen)},
+                                onAnalysisClick = {nc.navigate(Route.AnalysisScreen)},
+                                onResultsClick = {nc.navigate(Route.ResultsHistoryScreen)},
                                 //onStatisticsClick = { nc.navigate(Route.StatisticsScreen) }
                             )
                         }
@@ -50,8 +52,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable<Route.PictureScreen> {
-                            PictureScreen(
-                                mainScreenViewModel,
+                            PictureScreen(mainScreenViewModel,
                                 onNavigateBack = { nc.popBackStack() }
                             )
                         }

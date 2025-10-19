@@ -1,4 +1,8 @@
 package com.example.barpath
 
-class ResultsHistoryScreen {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun Route.ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}){
+
 }

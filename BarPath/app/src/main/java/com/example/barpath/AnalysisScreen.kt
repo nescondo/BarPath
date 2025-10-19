@@ -1,4 +1,8 @@
 package com.example.barpath
 
-class AnalysisScreen {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun Route.AnalysisScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}){
+
 }

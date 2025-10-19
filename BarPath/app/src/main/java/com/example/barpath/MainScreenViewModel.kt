@@ -1,5 +1,7 @@
 package com.example.barpath
 
-class MainScreenViewModel {
+import androidx.lifecycle.ViewModel
+
+class MainScreenViewModel: ViewModel() {
 
 }

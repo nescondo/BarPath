@@ -1,4 +1,7 @@
 package com.example.barpath
 
-class PictureScreen {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun PictureScreen (vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}){
 }

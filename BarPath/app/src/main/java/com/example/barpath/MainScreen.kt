@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 
+
 //TODO: screens we should probably have: main(dashboard), settings, take picture/edit picture, screen to
 //TODO: do form calculations, and screen for results/history of form
 @Composable
@@ -25,12 +26,14 @@ fun MainScreen(
     mainScreenViewModel: MainScreenViewModel,
     onPictureClick: () -> Unit,
     onSettingsClick: () -> Unit,
+    onAnalysisClick: () -> Unit,
+    onResultsClick: () -> Unit,
     modifier: Modifier = Modifier.Companion)
 {
 
 
 
-    /*Column(modifier = Modifier.fillMaxSize().background(Color.Gray)) {
+    Column(modifier = Modifier.fillMaxSize().background(Color.Gray)) {
         Header()
         Column(
             modifier = Modifier
@@ -39,34 +42,27 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = {}
+                onClick = {onPictureClick()}
             ) {
-                Text("Upload")
+                Text("Upload/Take Picture")
             }
-        }
-    }
-
-     */
-
-
-    Scaffold { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text("SquatForm")
-            Spacer(Modifier.height(32.dp))
-            Button(onClick = {onSettingsClick}) {
-                Text("Take or Upload Photo")
-            }
-            Spacer(Modifier.height(16.dp))
-            Button(onClick = {}) {
+            Button(
+                onClick = {onSettingsClick()}
+            ) {
                 Text("Settings")
             }
+            Button(
+                onClick = {onAnalysisClick()}
+            ) {
+                Text("Analyze form")
+            }
+            Button(
+                onClick = {onResultsClick()}
+            ) {
+                Text("History")
+            }
+
         }
     }
+
 }
