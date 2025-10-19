@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.update
 
 class MainScreenViewModel: ViewModel() {
 
+
+
+
     //colors for majority of app backgrounds (light/dark mode)
     val color1 = Color.LightGray
     val color2 = Color.Black
