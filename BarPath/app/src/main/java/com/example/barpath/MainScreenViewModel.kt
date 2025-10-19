@@ -1,7 +1,5 @@
 package com.example.barpath
 
-import android.R.attr.data
-import android.system.Os.stat
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -12,9 +10,10 @@ import kotlinx.coroutines.flow.update
 class MainScreenViewModel: ViewModel() {
 
     //colors for majority of app backgrounds (light/dark mode)
-    val color = Color.White
-    val _color = mutableStateOf(color)
-
+    val color1 = Color.LightGray
+    val color2 = Color.Black
+    val _color1 = mutableStateOf(color1)
+    val _color2 = mutableStateOf(color2)
     //handling of history of collected data
     data class statistics(val form: String)
 
