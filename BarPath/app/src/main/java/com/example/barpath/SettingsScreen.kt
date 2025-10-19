@@ -1,5 +1,6 @@
 package com.example.barpath
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,16 +25,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 
 
 @Composable
 fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
-    var _selectedTheme by remember { mutableStateOf(false) }
 
+
+    var _selectedTheme by remember { mutableStateOf(false) }
+    //var theme by remember {mutableStateOf(vm._theme.value)}
+    //var tempTheme by remember {mutableStateOf(vm._theme.value)}
     Column(){
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .background(vm._color.value),
             verticalAlignment = Alignment.CenterVertically
         ){
 
@@ -61,11 +67,11 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
         ) {
             DropdownMenuItem(
                 text = { Text("Light Mode") },
-                onClick = {}
+                onClick = {vm._color.value = Color.LightGray}
             )
             DropdownMenuItem(
                 text = { Text("Dark Mode") },
-                onClick = {}
+                onClick = {vm._color.value = Color.DarkGray}
             )
         }
         }

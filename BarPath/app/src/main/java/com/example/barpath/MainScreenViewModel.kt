@@ -1,11 +1,41 @@
 package com.example.barpath
 
+import android.R.attr.data
+import android.system.Os.stat
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class MainScreenViewModel: ViewModel() {
 
+    //colors for majority of app backgrounds (light/dark mode)
+    val color = Color.White
+    val _color = mutableStateOf(color)
 
-    val selectedTheme = MutableList<Boolean?>(2) { false }
-    val _selectedTheme = MutableStateFlow(selectedTheme)
+    //handling of history of collected data
+    data class statistics(val form: String)
+
+    //specific variables for handling stored data
+    private val _myStat = MutableStateFlow(emptyList<statistics>())
+    val myStat = _myStat.asStateFlow()
+
+    val _form = MutableStateFlow("good")
+    val form = _form
+
+    fun removeStatistic(stat: statistics) {
+        _myStat.update { list ->
+            list - stat
+        }
+    }
+
+    fun addStatistic() {
+        _myStat.update {
+            it + statistics(_form.value)
+        }
+
+
+    }
 }
