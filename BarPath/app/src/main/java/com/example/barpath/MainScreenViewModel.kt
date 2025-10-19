@@ -18,7 +18,7 @@ class MainScreenViewModel: ViewModel() {
     val _color1 = mutableStateOf(color1)
     val _color2 = mutableStateOf(color2)
     //handling of history of collected data
-    data class statistics(val form: String)
+    data class statistics(val form: String, val image: Int)
 
     //specific variables for handling stored data
     private val _myStat = MutableStateFlow(emptyList<statistics>())
@@ -38,7 +38,7 @@ class MainScreenViewModel: ViewModel() {
     //function to add a data entry in history list
     fun addStatistic() {
         _myStat.update {
-            it + statistics(_form.value)
+            it + statistics(_form.value, R.drawable.sample)
         }
 
 
