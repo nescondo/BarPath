@@ -24,12 +24,15 @@ class MainScreenViewModel: ViewModel() {
     val _form = MutableStateFlow("good")
     val form = _form
 
+
+    //function to remove a data entry in history list
     fun removeStatistic(stat: statistics) {
         _myStat.update { list ->
             list - stat
         }
     }
 
+    //function to add a data entry in history list
     fun addStatistic() {
         _myStat.update {
             it + statistics(_form.value)

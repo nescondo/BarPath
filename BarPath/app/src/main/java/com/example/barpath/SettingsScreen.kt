@@ -34,8 +34,7 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
 
 
     var _selectedTheme by remember { mutableStateOf(false) }
-    //var theme by remember {mutableStateOf(vm._theme.value)}
-    //var tempTheme by remember {mutableStateOf(vm._theme.value)}
+
     Column(modifier = Modifier.background(vm._color1.value).fillMaxHeight()){
         Row(
             modifier = Modifier

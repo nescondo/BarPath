@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,16 +25,16 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}){
 
+
     val statsList by vm.myStat.collectAsState()
 
-    Row() {
+    Row(modifier = Modifier.background(vm._color1.value)
+        .fillMaxHeight().fillMaxWidth()) {
         Button(
-
             onClick = { onNavigateBack() }
         ) {
             Text("Back")
         }
-
         Spacer(modifier = Modifier.height(50.dp))
         Button(
             onClick = { vm.addStatistic() },
@@ -42,37 +43,26 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
             Text("add dummy data")
         }
     }
-
     LazyColumn(
-
-
         modifier = Modifier.fillMaxWidth()
         .padding(top = 80.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(statsList) { stat ->
-
-
             Card(
                 modifier = Modifier.fillMaxWidth().background(Color.Blue),
-
-
-
                 ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     //Text("Stats for game #${vm.numGames.collectAsState().value}")
 
                     Text("form: ${stat.form}")
                     Text("image: TODO")
-
-
                 }
                 Button(
                     onClick = {vm.removeStatistic(stat)},
                 ) {
                     Text("Delete")
                 }
-
             }
         }
     }

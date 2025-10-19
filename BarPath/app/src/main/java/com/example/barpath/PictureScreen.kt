@@ -1,8 +1,10 @@
 package com.example.barpath
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
@@ -17,12 +19,14 @@ import androidx.compose.ui.unit.dp
 fun PictureScreen (vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
 
     Column(
-         // Fills remaining vertical space
+
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxWidth()
+            .background(vm._color1.value)
+            .fillMaxHeight(),
     ) {
-        Spacer(Modifier.height(100.dp)) // Fills remaining vertical space
+        Spacer(Modifier.height(100.dp))
         Button(
             onClick = {},
             modifier = Modifier.fillMaxWidth()
