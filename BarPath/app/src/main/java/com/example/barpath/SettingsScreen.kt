@@ -3,7 +3,9 @@ package com.example.barpath
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -34,19 +36,6 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ){
-
-            Button(
-                onClick = { onNavigateBack() }
-            ) {
-                Text("Back")
-            }
-
-            Button(
-                onClick = { onNavigateBack() }
-            ) {
-                Text("Delete History")
-            }
-
 
 
         Text(
@@ -81,6 +70,18 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
         }
         }
     }
+        Spacer(modifier = Modifier.height(100.dp))
+        Button(
+            onClick = { onNavigateBack() }
+        ) {
+            Text("Back")
+        }
+
+        Button(
+            onClick = { onNavigateBack() }
+        ) {
+            Text("Delete History")
+        }
 }
 
     }
