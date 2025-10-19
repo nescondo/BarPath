@@ -56,6 +56,16 @@ class MainActivity : ComponentActivity() {
                                 onNavigateBack = { nc.popBackStack() }
                             )
                         }
+                        composable<Route.ResultsHistoryScreen> {
+                            ResultsHistoryScreen(mainScreenViewModel,
+                                onNavigateBack = { nc.popBackStack() }
+                            )
+                        }
+                        composable<Route.AnalysisScreen> {
+                            AnalysisScreen(mainScreenViewModel,
+                                onNavigateBack = { nc.popBackStack() }
+                            )
+                        }
                     }
                 }
             }
