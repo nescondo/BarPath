@@ -1,5 +1,6 @@
 package com.example.barpath
 
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -10,13 +11,12 @@ import kotlinx.coroutines.flow.update
 class MainScreenViewModel: ViewModel() {
 
 
-
-
     //colors for majority of app backgrounds (light/dark mode)
     val color1 = Color.LightGray
     val color2 = Color.Black
     val _color1 = mutableStateOf(color1)
     val _color2 = mutableStateOf(color2)
+
     //handling of history of collected data
     data class statistics(val form: String, val image: Int)
 
@@ -26,7 +26,6 @@ class MainScreenViewModel: ViewModel() {
 
     val _form = MutableStateFlow("good")
     val form = _form
-
 
     //function to remove a data entry in history list
     fun removeStatistic(stat: statistics) {
@@ -40,7 +39,5 @@ class MainScreenViewModel: ViewModel() {
         _myStat.update {
             it + statistics(_form.value, R.drawable.sample)
         }
-
-
     }
 }
