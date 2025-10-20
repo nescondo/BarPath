@@ -37,49 +37,61 @@ fun PictureScreen (vm: MainScreenViewModel, onNavigateBack: () -> Unit) {
             ) == PackageManager.PERMISSION_GRANTED
         )
     }
+    var showCameraPreview by remember {
+        mutableStateOf(false)
+    }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         hasCameraPermission = isGranted
         if (isGranted) {
-            // Permission was granted. You can now launch the camera.
+            showCameraPreview = true
         }
         else {
             // Permission was denied. You can show a message to the user.
         }
     }
+    if (showCameraPreview && hasCameraPermission) {
+        //Call Camera Screen
+    }
+    else {
+        Column(
 
-    Column(
-
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(vm._color1.value)
-            .fillMaxHeight(),
-    ) {
-        Spacer(Modifier.height(100.dp))
-        Button(
-            onClick = {
-                permissionLauncher.launch(Manifest.permission.CAMERA)
-            },
-            modifier = Modifier.fillMaxWidth()
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(vm._color1.value)
+                .fillMaxHeight(),
         ) {
-            Text("Take Photo")
-        }
+            Spacer(Modifier.height(100.dp))
+            Button(
+                onClick = {
+                    if (hasCameraPermission) {
+                        showCameraPreview = true
+                    }
+                    else {
+                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Take Photo")
+            }
 
-        Button(
-            onClick = {},
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Upload existing photo")
-        }
+            Button(
+                onClick = {},
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Upload existing photo")
+            }
 
-        Button(
-            onClick = { onNavigateBack() }
-        ) {
-            Text("Back")
+            Button(
+                onClick = { onNavigateBack() }
+            ) {
+                Text("Back")
+            }
         }
     }
 }
