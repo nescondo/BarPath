@@ -2,7 +2,8 @@ package com.example.barpath
 
 import android.app.Application
 import androidx.room.Room
-import edu.gvsu.cis.memorymatching.data.MyDatabase
+import com.example.barpath.data.MyDatabase
+
 
 class BarPathApplication: Application() {
     lateinit var myDB: MyDatabase

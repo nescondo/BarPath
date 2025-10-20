@@ -1,4 +1,4 @@
-package edu.gvsu.cis.memorymatching.data
+package com.example.barpath.data
 
 import androidx.room.Dao
 import androidx.room.Database
