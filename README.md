@@ -2,13 +2,12 @@
 A mobile application to help determine technique issues, flaws, and corrections for the barbell back squat.
 
 ## Features
-- Ability to upload photos
-- Ability to record videos (?)
-- Save user's history of photos taken with the application
-- Give the user critiques on squat technique such as squat depth and heels rising due to weight distribution on feet
+- Ability to track reps, time between reps, and depth
+- Save user's history of sessions/sets
+- Inform the user of any major inconsistencies between reps
 
 ## Technologies
-- Utilizing <b>CameraX</b> for camera functionality, such as recording and photos.
+- Utilizing <b>Accelerometer and Gyroscope</b> for tracking reps, depth and time between reps
 - <b>RoomDB</b> for local database (for now)
 - Possibly <b>Firebase</b> for a remote database in the future (?)
 
