@@ -36,7 +36,7 @@ fun MainScreen(
             Button(
                 onClick = {onPictureClick()}
             ) {
-                Text("Upload/Take Picture")
+                Text("Tracking")
             }
             Button(
                 onClick = {onSettingsClick()}

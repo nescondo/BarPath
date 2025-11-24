@@ -22,8 +22,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun PictureScreen (vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
-    val accel by vm.slowAccel.collectAsState()
-    val gyro by vm.slowGyro.collectAsState()
+    val accel by vm.accel.collectAsState()
+    val gyro by vm.gyro.collectAsState()
 
     LaunchedEffect(Unit) { vm.startSensors() }
 
@@ -42,14 +42,14 @@ fun PictureScreen (vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
             onClick = {},
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Take Photo")
+            Text("Start Tracking")
         }
 
         Button(
             onClick = {},
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Upload existing photo")
+            Text("Stop Tracking")
         }
 
         Button(
@@ -57,13 +57,20 @@ fun PictureScreen (vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
         ) {
             Text("Back")
         }
-        Text("Accelerometer")
-        Text("X: ${accel[0]}  Y: ${accel[1]}  Z: ${accel[2]}")
+        Text("Debug info",color =vm._color2.value)
 
-        Spacer(Modifier.height(16.dp))
 
-        Text("Gyroscope")
-        Text("X: ${gyro[0]}  Y: ${gyro[1]}  Z: ${gyro[2]}")
+        Text("Accelerometer",color = vm._color2.value)
+        Text("x: ${"%.3f".format(accel[0])}",color = vm._color2.value)
+        Text("y: ${"%.3f".format(accel[1])}",color = vm._color2.value)
+        Text("z: ${"%.3f".format(accel[2])}",color = vm._color2.value)
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text("Gyroscope",color = vm._color2.value)
+        Text("x: ${"%.3f".format(gyro[0])}",color = vm._color2.value)
+        Text("y: ${"%.3f".format(gyro[1])}",color = vm._color2.value)
+        Text("z: ${"%.3f".format(gyro[2])}",color = vm._color2.value)
+        }
     }
 
-}
