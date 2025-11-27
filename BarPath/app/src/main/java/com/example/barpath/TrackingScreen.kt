@@ -37,14 +37,14 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     ) {
         Spacer(Modifier.height(100.dp))
         Button(
-            onClick = {},
+            onClick = {trackingVm.startTracking()},
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Start Tracking")
         }
 
         Button(
-            onClick = {},
+            onClick = {trackingVm.stopTracking()},
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Stop Tracking")
