@@ -19,10 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class MainScreenViewModel(app: Application
-) : AndroidViewModel(app), SensorEventListener {
-
-
-
+) : AndroidViewModel(app) {
 
 
     //colors for majority of app backgrounds (light/dark mode)
@@ -42,58 +39,6 @@ class MainScreenViewModel(app: Application
 
 
     //Things for sensors
-    private val _accel = MutableStateFlow(FloatArray(3))
-    val accel = _accel.asStateFlow()
-
-    private val _gyro = MutableStateFlow(FloatArray(3))
-    val gyro = _gyro.asStateFlow()
-
-    val slowAccel = accel
-        .sample(200)
-        .stateIn(viewModelScope, SharingStarted.Lazily, FloatArray(3))
-    val slowGyro = gyro
-        .sample(200)
-        .stateIn(viewModelScope, SharingStarted.Lazily, FloatArray(3))
-    private val sensorManager =
-        app.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-    private var accelSensor: Sensor? = null
-    private var gyroSensor: Sensor? = null
-
-    fun startSensors() {
-        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        gyroSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-
-        accelSensor?.let {
-            sensorManager.registerListener(
-                this, it, SensorManager.SENSOR_DELAY_GAME
-            )
-        }
-
-        gyroSensor?.let {
-            sensorManager.registerListener(
-                this, it, SensorManager.SENSOR_DELAY_GAME
-            )
-        }
-    }
-
-    fun stopSensors() {
-        sensorManager.unregisterListener(this)
-    }
-
-    override fun onSensorChanged(event: SensorEvent) {
-        when (event.sensor.type) {
-            Sensor.TYPE_ACCELEROMETER -> {
-                _accel.value = event.values.clone()
-            }
-            Sensor.TYPE_GYROSCOPE -> {
-                _gyro.value = event.values.clone()
-            }
-        }
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
-
 
 //function to remove a data entry in history list
 fun removeStatistic(stat: statistics) {

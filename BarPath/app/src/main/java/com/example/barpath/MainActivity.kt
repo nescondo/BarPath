@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mainScreenViewModel by viewModels<MainScreenViewModel>()
+        val trackingScreenViewModel by viewModels<TrackingScreenViewModel>()
         //   enableEdgeToEdge()
         //  WindowCompat.getInsetsController(window, window.decorView).apply {
         //    isAppearanceLightStatusBars = false
@@ -59,7 +60,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable<Route.PictureScreen> {
-                            PictureScreen(mainScreenViewModel,
+                            TrackingScreen(mainScreenViewModel, trackingScreenViewModel,
                                 onNavigateBack = { nc.popBackStack() }
                             )
                         }
