@@ -23,8 +23,8 @@ class MainScreenViewModel(app: Application
 
 
     //colors for majority of app backgrounds (light/dark mode)
-    val color1 = Color.LightGray
-    val color2 = Color.Black
+    val color1 = Color.DarkGray
+    val color2 = Color.White
     val _color1 = mutableStateOf(color1)
     val _color2 = mutableStateOf(color2)
     //handling of history of collected data

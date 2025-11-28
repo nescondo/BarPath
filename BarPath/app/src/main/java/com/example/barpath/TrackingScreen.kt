@@ -22,7 +22,9 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
 
     val accel by trackingVm.accel.collectAsState()
     val gyro by trackingVm.gyro.collectAsState()
-
+    val repCount by trackingVm.repCount.collectAsState()
+    val isTracking by trackingVm.isTracking.collectAsState()
+    val isCalibrating by trackingVm.isCalibrating.collectAsState()
     LaunchedEffect(Unit) { trackingVm.startSensors() }
 
 
@@ -36,39 +38,44 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
             .fillMaxHeight(),
     ) {
         Spacer(Modifier.height(100.dp))
+
+
+        Text("Tracking: $isTracking",color = mainVm._color2.value)
+        Text("Calibrating: $isCalibrating",color = mainVm._color2.value)
+        Text("Reps: $repCount",color = mainVm._color2.value)
+
+        Text("Accelerometer data:",color = mainVm._color2.value)
+        Text(
+            text = "x: %.3f   y: %.3f   z: %.3f".format(accel[0], accel[1], accel[2]),
+            color = mainVm._color2.value
+        )
+
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text("Gyroscope data:",color = mainVm._color2.value)
+        Text(
+            text = "x: %.3f   y: %.3f   z: %.3f".format(gyro[0], gyro[1], gyro[2]),
+            color = mainVm._color2.value
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = {trackingVm.startTracking()},
-            modifier = Modifier.fillMaxWidth()
+            onClick = {trackingVm.startTracking()}
         ) {
             Text("Start Tracking")
         }
 
         Button(
-            onClick = {trackingVm.stopTracking()},
-            modifier = Modifier.fillMaxWidth()
+            onClick = {trackingVm.stopTracking()}
         ) {
             Text("Stop Tracking")
         }
-
         Button(
             onClick = { onNavigateBack() }
         ) {
             Text("Back")
         }
-        Text("Debug info",color =mainVm._color2.value)
+    }
 
-
-        Text("Accelerometer",color = mainVm._color2.value)
-        Text("x: ${"%.3f".format(accel[0])}",color = mainVm._color2.value)
-        Text("y: ${"%.3f".format(accel[1])}",color = mainVm._color2.value)
-        Text("z: ${"%.3f".format(accel[2])}",color = mainVm._color2.value)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Text("Gyroscope",color = mainVm._color2.value)
-        Text("x: ${"%.3f".format(gyro[0])}",color = mainVm._color2.value)
-        Text("y: ${"%.3f".format(gyro[1])}",color = mainVm._color2.value)
-        Text("z: ${"%.3f".format(gyro[2])}",color = mainVm._color2.value)
-        }
     }
 
