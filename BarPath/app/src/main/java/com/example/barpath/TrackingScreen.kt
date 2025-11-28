@@ -25,6 +25,10 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     val repCount by trackingVm.repCount.collectAsState()
     val isTracking by trackingVm.isTracking.collectAsState()
     val isCalibrating by trackingVm.isCalibrating.collectAsState()
+    val squatState by trackingVm.squatStateFlow.collectAsState()
+
+
+
     LaunchedEffect(Unit) { trackingVm.startSensors() }
 
 
@@ -39,7 +43,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     ) {
         Spacer(Modifier.height(100.dp))
 
-
+        Text("State: $squatState")
         Text("Tracking: $isTracking",color = mainVm._color2.value)
         Text("Calibrating: $isCalibrating",color = mainVm._color2.value)
         Text("Reps: $repCount",color = mainVm._color2.value)

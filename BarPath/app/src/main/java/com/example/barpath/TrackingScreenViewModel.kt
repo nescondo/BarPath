@@ -18,8 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class TrackingScreenViewModel(app: Application
-) : AndroidViewModel(app), SensorEventListener {
+class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorEventListener {
 
     //Things for sensors
     private val _accel = MutableStateFlow(FloatArray(3))
@@ -31,37 +30,32 @@ class TrackingScreenViewModel(app: Application
     val slowAccel = accel
         .sample(200)
         .stateIn(viewModelScope, SharingStarted.Lazily, FloatArray(3))
+
     val slowGyro = gyro
         .sample(200)
         .stateIn(viewModelScope, SharingStarted.Lazily, FloatArray(3))
 
-    private val sensorManager =
-        app.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
+    private val sensorManager = app.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private var accelSensor: Sensor? = null
     private var gyroSensor: Sensor? = null
-
     private var integratedPitch = 0f
     private var lastGyroTimestamp = 0L
-
     //initial state (calibration period)
     private var baselineAngle = 0f
     private var squatState = SquatState.CALIBRATING
     private val _isCalibrating = MutableStateFlow(false)
     val isCalibrating = _isCalibrating.asStateFlow()
-
     private val _isTracking = MutableStateFlow(false)
     val isTracking = _isTracking.asStateFlow()
 
-    private val minRequiredDepth = 90f
+    private val minRequiredDepth = 40f
+
+    private val _squatState = MutableStateFlow(SquatState.CALIBRATING)
+    val squatStateFlow = _squatState.asStateFlow()
 
     //enum to determine phase of current squat
     enum class SquatState {
-        CALIBRATING,
-        READY,
-        DESCENDING,
-        AT_BOTTOM,
-        ASCENDING
+        CALIBRATING, READY, DESCENDING, AT_BOTTOM, ASCENDING
     }
 
     // individual rep tracking
@@ -69,11 +63,13 @@ class TrackingScreenViewModel(app: Application
     private var currentRepNumber = 0
     private var currentRepMaxDepth = 0f
     private var depthReached = false
-
     private val currentReps = mutableListOf<SquatRep>()
-
     private val _repCount = MutableStateFlow(0)
     val repCount = _repCount.asStateFlow()
+
+    private var lastTopTimestamp = 0L
+    private val lockoutDuration = 200L  // ms
+
 
     fun startSensors() {
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -81,13 +77,17 @@ class TrackingScreenViewModel(app: Application
 
         accelSensor?.let {
             sensorManager.registerListener(
-                this, it, SensorManager.SENSOR_DELAY_GAME
+                this,
+                it,
+                SensorManager.SENSOR_DELAY_GAME
             )
         }
 
         gyroSensor?.let {
             sensorManager.registerListener(
-                this, it, SensorManager.SENSOR_DELAY_GAME
+                this,
+                it,
+                SensorManager.SENSOR_DELAY_GAME
             )
         }
     }
@@ -110,18 +110,21 @@ class TrackingScreenViewModel(app: Application
                     val currentTime = event.timestamp
 
                     if (lastGyroTimestamp != 0L) {
+
                         // Calculate time difference in seconds
                         val dt = (currentTime - lastGyroTimestamp) / 1_000_000_000f
 
                         // Get angular velocity around X-axis (pitch rotation)
-                        val angularVelocityX = event.values[0]  // rad/s
+                        val angularVelocityX = event.values[0] // rad/s
 
                         // Convert to degrees and calculate angle change
                         val angleChange = Math.toDegrees(angularVelocityX.toDouble()).toFloat() * dt
 
                         // Integrate to get total pitch angle
                         integratedPitch += angleChange
+                        lastGyroTimestamp = currentTime
 
+                        println("drifting too much, reset pitch")
                         println("Integrated pitch: $integratedPitch, angular velocity: $angularVelocityX rad/s")
 
                         processRepData(integratedPitch)
@@ -136,28 +139,34 @@ class TrackingScreenViewModel(app: Application
     // Tracking reps begin here
     private fun startCalibration() {
         println("in startCalibration")
+
         _isCalibrating.value = true
-        squatState = SquatState.CALIBRATING
+        _squatState.value = SquatState.CALIBRATING
+
         integratedPitch = 0f
         lastGyroTimestamp = 0L
 
         // wait 5 seconds (to put phone in pocket, set up under barbell, get into position, etc)
         viewModelScope.launch {
             delay(5000)
-            baselineAngle = 0f  //should always be ~0
+
+            baselineAngle = 0f //should always be ~0
             println("BASELINE PITCH: $baselineAngle")
+
             _isCalibrating.value = false
-            squatState = SquatState.READY
+            _squatState.value = SquatState.READY
         }
     }
 
     fun startTracking() {
         println("in startTracking")
+
         _isTracking.value = true
         currentReps.clear()
         currentRepNumber = 0
         _repCount.value = 0
         depthReached = false
+
         integratedPitch = 0f
         lastGyroTimestamp = 0L
 
@@ -166,6 +175,7 @@ class TrackingScreenViewModel(app: Application
 
     fun stopTracking() {
         println("Final reps: $currentReps")
+
         _isTracking.value = false
         lastGyroTimestamp = 0L
     }
@@ -176,7 +186,8 @@ class TrackingScreenViewModel(app: Application
 
         if (pitchChange > 5f) {
             println("DESCENDING")
-            squatState = SquatState.DESCENDING
+            _squatState.value = SquatState.DESCENDING
+
             currentRepStartTime = System.currentTimeMillis()
             currentRepMaxDepth = pitchChange
         }
@@ -195,7 +206,7 @@ class TrackingScreenViewModel(app: Application
         if (pitchChange >= minRequiredDepth - 5 && !depthReached) {
             println("AT_BOTTOM (parallel reached at $pitchChange°)")
             depthReached = true
-            squatState = SquatState.AT_BOTTOM
+            _squatState.value = SquatState.AT_BOTTOM
         }
     }
 
@@ -211,16 +222,18 @@ class TrackingScreenViewModel(app: Application
         // Detect when starting to come back up (10 degree threshold)
         if (depthReached && pitchChange < currentRepMaxDepth - 10f) {
             println("ASCENDING")
-            squatState = SquatState.ASCENDING
+            _squatState.value = SquatState.ASCENDING
         }
     }
 
     fun checkTop(pitch: Float) {
+
         val pitchChange = abs(pitch - baselineAngle)
         println("checkTop: pitchChange=$pitchChange")
 
         // Back to starting position (within 5 degrees of baseline)
         if (pitchChange <= 5f) {
+
             val duration = System.currentTimeMillis() - currentRepStartTime
 
             val completedRep = SquatRep(
@@ -232,17 +245,15 @@ class TrackingScreenViewModel(app: Application
             currentReps.add(completedRep)
             currentRepNumber++
             _repCount.value = currentRepNumber
-
             println("REP COMPLETED: #$currentRepNumber, depth=${currentRepMaxDepth}°, duration=${duration}ms")
-
             currentRepMaxDepth = 0f
             depthReached = false
-            squatState = SquatState.READY
+            _squatState.value = SquatState.READY
         }
     }
 
     fun processRepData(pitch: Float) {
-        when (squatState) {
+        when (_squatState.value) {
             SquatState.CALIBRATING -> {}
             SquatState.READY -> detectDescent(pitch)
             SquatState.DESCENDING -> detectBottom(pitch)
@@ -251,5 +262,7 @@ class TrackingScreenViewModel(app: Application
         }
     }
 
+
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
 }
