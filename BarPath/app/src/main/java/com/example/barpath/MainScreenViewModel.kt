@@ -28,7 +28,7 @@ class MainScreenViewModel(app: Application
     val _color1 = mutableStateOf(color1)
     val _color2 = mutableStateOf(color2)
     //handling of history of collected data
-    data class statistics(val reps: Int, val depthAverage: Float)
+    data class statistics(val reps: Int, val averageTime: Float, val depthAverage: Float)
 
     //specific variables for handling stored data
     private val _myStat = MutableStateFlow(emptyList<statistics>())
@@ -48,9 +48,9 @@ fun removeStatistic(stat: statistics) {
 }
 
     //function to add a data entry in history list
-    fun addStatistic(rep: Int, depth: Float) {
+    fun addStatistic(reps: Int, time: Float, depth: Float) {
         _myStat.update {
-            it + statistics(rep,depth)
+            it + statistics(reps, time, depth)
         }
 
 

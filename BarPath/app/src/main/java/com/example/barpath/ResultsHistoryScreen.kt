@@ -62,9 +62,9 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
                 ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     //Text("Stats for game #${vm.numGames.collectAsState().value}")
-
-                    Text("Reps: ${stat.reps}")
-                    Text("average depth (not correct currently): ${stat.depthAverage}")
+                    Text("reps: ${stat.reps}")
+                    Text("Average time between reps: ${stat.averageTime}")
+                    Text("average depth: ${stat.depthAverage}")
                     /*
                     Image(
                         painter = painterResource(id = stat.image),

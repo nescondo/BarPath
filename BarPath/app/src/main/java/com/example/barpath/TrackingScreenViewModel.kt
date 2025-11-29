@@ -70,6 +70,12 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     private val _currentDepth = MutableStateFlow(0f)
     val currentDepth = _currentDepth.asStateFlow()
 
+    private val _averageRepTime = MutableStateFlow(0f)   // in milliseconds
+    val averageRepTime = _averageRepTime.asStateFlow()
+
+    private val _averageDepth = MutableStateFlow(0f)     // in degrees
+    val averageDepth = _averageDepth.asStateFlow()
+
 
     fun startSensors() {
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -252,6 +258,14 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
             currentRepMaxDepth = 0f
             depthReached = false
             _squatState.value = SquatState.READY
+
+            //Update average depth
+            val totalDepth = currentReps.sumOf { it.maxDepth.toDouble() }
+            _averageDepth.value = (totalDepth / currentReps.size).toFloat()
+
+            //update average rep time
+            val totalTime = currentReps.sumOf { it.totalDuration.toDouble() }
+            _averageRepTime.value = (totalTime / currentReps.size).toFloat()
         }
     }
 

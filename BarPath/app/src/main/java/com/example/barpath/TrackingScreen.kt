@@ -27,6 +27,8 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     val isCalibrating by trackingVm.isCalibrating.collectAsState()
     val squatState by trackingVm.squatStateFlow.collectAsState()
     val depth by trackingVm.currentDepth.collectAsState()
+    val averageTime by trackingVm.averageRepTime.collectAsState()
+    val averageDepth by trackingVm.averageDepth.collectAsState()
 
 
     LaunchedEffect(Unit) { trackingVm.startSensors() }
@@ -67,7 +69,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
 
         Button(
             onClick = {
-                mainVm.addStatistic(repCount,depth)
+                mainVm.addStatistic(repCount,averageTime, averageDepth)
                 trackingVm.stopTracking()
             }
 

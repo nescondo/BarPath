@@ -39,20 +39,24 @@ fun MainScreen(
                 Text("Tracking")
             }
             Button(
+                onClick = {onResultsClick()}
+            ) {
+                Text("History")
+            }
+            Button(
                 onClick = {onSettingsClick()}
             ) {
                 Text("Settings")
             }
+            /*
             Button(
                 onClick = {onAnalysisClick()}
             ) {
                 Text("Analyze form")
             }
-            Button(
-                onClick = {onResultsClick()}
-            ) {
-                Text("History")
-            }
+
+             */
+
 
         }
 
