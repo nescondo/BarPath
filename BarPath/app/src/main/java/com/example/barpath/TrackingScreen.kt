@@ -26,7 +26,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     val isTracking by trackingVm.isTracking.collectAsState()
     val isCalibrating by trackingVm.isCalibrating.collectAsState()
     val squatState by trackingVm.squatStateFlow.collectAsState()
-
+    val depth by trackingVm.currentDepth.collectAsState()
 
 
     LaunchedEffect(Unit) { trackingVm.startSensors() }
@@ -48,11 +48,12 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         Text("Calibrating: $isCalibrating",color = mainVm._color2.value)
         Text("Reps: $repCount",color = mainVm._color2.value)
 
-        Text("Accelerometer data:",color = mainVm._color2.value)
-        Text(
-            text = "x: %.3f   y: %.3f   z: %.3f".format(accel[0], accel[1], accel[2]),
-            color = mainVm._color2.value
-        )
+        //Text("Accelerometer data:",color = mainVm._color2.value)
+        Text("current depth: $depth")
+        //Text(
+          //  text = "x: %.3f   y: %.3f   z: %.3f".format(accel[0], accel[1], accel[2]),
+         //   color = mainVm._color2.value
+      //  )
 
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -63,6 +64,17 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
             color = mainVm._color2.value
         )
         Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = {
+                mainVm.addStatistic(repCount,depth)
+                trackingVm.stopTracking()
+            }
+
+        ) {
+            Text("Save Set")
+        }
+
         Button(
             onClick = {trackingVm.startTracking()}
         ) {
@@ -72,7 +84,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         Button(
             onClick = {trackingVm.stopTracking()}
         ) {
-            Text("Stop Tracking")
+            Text("Cancel Tracking")
         }
         Button(
             onClick = { onNavigateBack() }

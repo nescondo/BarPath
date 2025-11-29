@@ -67,8 +67,8 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     private val _repCount = MutableStateFlow(0)
     val repCount = _repCount.asStateFlow()
 
-    private var lastTopTimestamp = 0L
-    private val lockoutDuration = 200L  // ms
+    private val _currentDepth = MutableStateFlow(0f)
+    val currentDepth = _currentDepth.asStateFlow()
 
 
     fun startSensors() {
@@ -122,6 +122,9 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
                         // Integrate to get total pitch angle
                         integratedPitch += angleChange
+
+                        //set the current depth
+                        _currentDepth.value = abs(integratedPitch - baselineAngle)
                         lastGyroTimestamp = currentTime
 
                         println("drifting too much, reset pitch")

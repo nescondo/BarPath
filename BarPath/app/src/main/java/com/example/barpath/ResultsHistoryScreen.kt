@@ -41,12 +41,15 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
             Text("Back")
         }
         Spacer(modifier = Modifier.height(50.dp))
+        /*
         Button(
             onClick = { vm.addStatistic() },
 
             ) {
             Text("add dummy data")
         }
+
+         */
     }
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
@@ -60,8 +63,9 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
                 Column(modifier = Modifier.padding(12.dp)) {
                     //Text("Stats for game #${vm.numGames.collectAsState().value}")
 
-                    Text("form: ${stat.form}")
-                    Text("(filler image, will be photo taken/uploaded)")
+                    Text("Reps: ${stat.reps}")
+                    Text("average depth (not correct currently): ${stat.depthAverage}")
+                    /*
                     Image(
                         painter = painterResource(id = stat.image),
                         contentDescription = "Form image",
@@ -70,6 +74,8 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
                             .height(100.dp),
                         //.rotate(vm._rotation.value)
                     )
+
+                     */
                 }
                 Button(
                     onClick = {vm.removeStatistic(stat)},
