@@ -154,6 +154,8 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
         integratedPitch = 0f
         lastGyroTimestamp = 0L
+        _averageDepth.value = 0f
+        _averageRepTime.value = 0f
 
         // wait 5 seconds (to put phone in pocket, set up under barbell, get into position, etc)
         viewModelScope.launch {

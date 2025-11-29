@@ -44,14 +44,18 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
             .fillMaxHeight(),
     ) {
         Spacer(Modifier.height(100.dp))
-
-        Text("State: $squatState")
-        Text("Tracking: $isTracking",color = mainVm._color2.value)
-        Text("Calibrating: $isCalibrating",color = mainVm._color2.value)
         Text("Reps: $repCount",color = mainVm._color2.value)
+        Text("Current Depth: $depth")
+        Text("Time Average: $averageTime")
+        Text("Depth Average: $averageDepth")
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text("Tracking? $isTracking",color = mainVm._color2.value)
+        Text("Calibrating? $isCalibrating",color = mainVm._color2.value)
+        Text("State: $squatState")
 
         //Text("Accelerometer data:",color = mainVm._color2.value)
-        Text("current depth: $depth")
         //Text(
           //  text = "x: %.3f   y: %.3f   z: %.3f".format(accel[0], accel[1], accel[2]),
          //   color = mainVm._color2.value
