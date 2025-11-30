@@ -34,12 +34,10 @@ fun AnalysisScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
    var rotationAngle by remember { mutableStateOf(0f) }
 
     Column(modifier = Modifier.fillMaxWidth().
-    fillMaxHeight().
-    background(vm._color1.value)) {
+    fillMaxHeight()) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(vm._color1.value),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
 

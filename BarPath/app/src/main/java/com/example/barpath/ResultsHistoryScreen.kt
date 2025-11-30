@@ -33,7 +33,7 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
 
     val statsList by vm.myStat.collectAsState()
 
-    Row(modifier = Modifier.background(vm._color1.value)
+    Row(modifier = Modifier
         .fillMaxHeight().fillMaxWidth()) {
         Button(
             onClick = { onNavigateBack() }

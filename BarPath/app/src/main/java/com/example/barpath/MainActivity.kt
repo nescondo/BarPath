@@ -6,10 +6,13 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,18 +30,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val mainScreenViewModel by viewModels<MainScreenViewModel>()
         val trackingScreenViewModel by viewModels<TrackingScreenViewModel>()
-        //   enableEdgeToEdge()
+        enableEdgeToEdge()
         //  WindowCompat.getInsetsController(window, window.decorView).apply {
         //    isAppearanceLightStatusBars = false
 
 
         setContent {
-            BarPathTheme {
+            val themeMode = mainScreenViewModel.themeMode.value
+            val systemDarkTheme = isSystemInDarkTheme()
+            val useDarkTheme = when (themeMode) {
+                true -> true
+                false -> false
+                null -> systemDarkTheme
+            }
+            BarPathTheme(darkTheme = useDarkTheme) {
                 val nc = rememberNavController()
                 val navBackStackEntry by nc.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 val atHome = currentRoute?.endsWith("MainScreen") ?: false
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = MaterialTheme.colorScheme.background
+                ) { innerPadding ->
                     NavHost(
                         modifier = Modifier.padding(innerPadding),
                         navController = nc,

@@ -40,19 +40,18 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxWidth()
-            .background(mainVm._color1.value)
             .fillMaxHeight(),
     ) {
         Spacer(Modifier.height(100.dp))
-        Text("Reps: $repCount",color = mainVm._color2.value)
+        Text("Reps: $repCount")
         Text("Current Depth: $depth")
         Text("Time Average: $averageTime")
         Text("Depth Average: $averageDepth")
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Text("Tracking? $isTracking",color = mainVm._color2.value)
-        Text("Calibrating? $isCalibrating",color = mainVm._color2.value)
+        Text("Tracking? $isTracking")
+        Text("Calibrating? $isCalibrating")
         Text("State: $squatState")
 
         //Text("Accelerometer data:",color = mainVm._color2.value)
@@ -64,10 +63,9 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Text("Gyroscope data:",color = mainVm._color2.value)
+        Text("Gyroscope data:")
         Text(
             text = "x: %.3f   y: %.3f   z: %.3f".format(gyro[0], gyro[1], gyro[2]),
-            color = mainVm._color2.value
         )
         Spacer(modifier = Modifier.height(20.dp))
 

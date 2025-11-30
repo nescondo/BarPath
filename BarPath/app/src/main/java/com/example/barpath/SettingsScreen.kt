@@ -35,11 +35,10 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
 
     var _selectedTheme by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.background(vm._color1.value).fillMaxHeight()){
+    Column(modifier = Modifier.fillMaxHeight()){
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(vm._color1.value),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ){
 
@@ -47,7 +46,6 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
         Text(
             modifier = Modifier
                 .padding(start = 80.dp, top = 40.dp),
-            color = vm._color2.value,
             text = "Select app theme:"
         )
 
@@ -57,8 +55,7 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
 
             onClick = { _selectedTheme = !_selectedTheme }) {
             Icon(Icons.Default.KeyboardArrowDown,
-                contentDescription = "More options",
-                tint = vm._color2.value)
+                contentDescription = "More options")
         }
             Box(
                 modifier = Modifier
@@ -71,13 +68,17 @@ fun SettingsScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}) {
         ) {
             DropdownMenuItem(
                 text = { Text("Light Mode") },
-                onClick = {vm._color1.value = Color.LightGray
-                vm._color2.value = Color.Black}
+                onClick = {
+                    vm.setLightMode()
+                    _selectedTheme = false
+                }
             )
             DropdownMenuItem(
                 text = { Text("Dark Mode") },
-                onClick = {vm._color1.value = Color.DarkGray
-                vm._color2.value = Color.White}
+                onClick = {
+                    vm.setDarkMode()
+                    _selectedTheme = false
+                }
             )
         }
         }

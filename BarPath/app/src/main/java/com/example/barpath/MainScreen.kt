@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +27,7 @@ fun MainScreen(
 
 
 
-    Column(modifier = Modifier.fillMaxSize().background(mainScreenViewModel._color1.value)) {
+    Column(modifier = Modifier.fillMaxSize()) {
         Header()
         Column(
             modifier = Modifier
@@ -33,7 +35,7 @@ fun MainScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(
+            ExtendedFloatingActionButton(
                 onClick = {onPictureClick()}
             ) {
                 Text("Tracking")
