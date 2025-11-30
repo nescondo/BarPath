@@ -11,36 +11,36 @@ import androidx.room.RoomDatabase
 import kotlinx.coroutines.flow.Flow
 
 @Entity
-data class Photo(
+data class WorkoutSet(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val depthHit: Boolean,
-    val depthAngle: Float,
-    val heelRise: Boolean,
-    val heelAngle: Float
+    val totalReps: Int,
+    val duration: Float,
+    val avgSpeed: Float,
+    val lowestDepth: Float
 )
 
 @Dao
-interface PhotoDao {
+interface WorkoutSetDao {
     @Insert
-    suspend fun insertPhoto(photo: Photo)
+    suspend fun insertWorkoutSet(workoutSet: WorkoutSet)
 
     @Delete
-    suspend fun deletePhoto(photo: Photo)
+    suspend fun deleteWorkoutSet(workoutSet: WorkoutSet)
 
-    @Query("DELETE FROM photo WHERE id = :id")
-    suspend fun deletePhoto(id: Int)
+    @Query("DELETE FROM workoutSet WHERE id = :id")
+    suspend fun deleteWorkoutSet(id: Int)
 
-    @Query("SELECT * FROM photo WHERE id = :id")
-    suspend fun getPhoto(id: Int): Photo
+    @Query("SELECT * FROM workoutSet WHERE id = :id")
+    suspend fun getWorkoutSet(id: Int): WorkoutSet
 
-    @Query("SELECT * FROM photo ORDER BY id DESC")
-    fun getAllPhotos(): Flow<List<Photo>>
+    @Query("SELECT * FROM workoutset ORDER BY id DESC")
+    fun getAllWorkoutSets(): Flow<List<WorkoutSet>>
 
 }
 
 @Database(
-    entities = [Photo::class], version = 1, exportSchema = true
+    entities = [WorkoutSet::class], version = 1, exportSchema = true
 )
 abstract class MyDatabase : RoomDatabase() {
-    abstract fun getInstance(): PhotoDao
+    abstract fun getInstance(): WorkoutSetDao
 }

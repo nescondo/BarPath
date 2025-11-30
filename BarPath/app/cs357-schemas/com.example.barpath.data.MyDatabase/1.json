@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7832614418ee639f09990886e8de82b9",
+    "identityHash": "a3b092bbd788fc6d557ae7e5c4589a24",
     "entities": [
       {
-        "tableName": "Photo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `depthHit` INTEGER NOT NULL, `depthAngle` REAL NOT NULL, `heelRise` INTEGER NOT NULL, `heelAngle` REAL NOT NULL)",
+        "tableName": "WorkoutSet",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `totalReps` INTEGER NOT NULL, `duration` REAL NOT NULL, `avgSpeed` REAL NOT NULL, `lowestDepth` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,26 +15,26 @@
             "notNull": true
           },
           {
-            "fieldPath": "depthHit",
-            "columnName": "depthHit",
+            "fieldPath": "totalReps",
+            "columnName": "totalReps",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "depthAngle",
-            "columnName": "depthAngle",
+            "fieldPath": "duration",
+            "columnName": "duration",
             "affinity": "REAL",
             "notNull": true
           },
           {
-            "fieldPath": "heelRise",
-            "columnName": "heelRise",
-            "affinity": "INTEGER",
+            "fieldPath": "avgSpeed",
+            "columnName": "avgSpeed",
+            "affinity": "REAL",
             "notNull": true
           },
           {
-            "fieldPath": "heelAngle",
-            "columnName": "heelAngle",
+            "fieldPath": "lowestDepth",
+            "columnName": "lowestDepth",
             "affinity": "REAL",
             "notNull": true
           }
@@ -52,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7832614418ee639f09990886e8de82b9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a3b092bbd788fc6d557ae7e5c4589a24')"
     ]
   }
 }

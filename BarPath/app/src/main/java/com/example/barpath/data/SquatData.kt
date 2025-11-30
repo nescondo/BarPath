@@ -9,7 +9,9 @@ data class SquatRep(
 data class SquatSet(
     val reps: List<SquatRep>,
     val totalReps: Int,
-    val duration: Long
+    val setDuration: Long,
+    val avgSpeed: Float,
+    val lowestDepth: Float
 )
 
 fun getFastestRep(set: SquatSet): SquatRep? {

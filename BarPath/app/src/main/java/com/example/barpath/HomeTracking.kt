@@ -24,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeTracking() {
+fun HomeTracking(trackingVm: TrackingScreenViewModel) {
+
+    val sets by trackingVm.sets.collectAsState(emptyList())
+    val latestSet = sets.lastOrNull()
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,14 +74,14 @@ fun HomeTracking() {
                 StatItem(
                     icon = Icons.Default.FitnessCenter,
                     label = "Reps",
-                    value = "4",
+                    value = latestSet?.totalReps?.toString() ?: "0",
                     modifier = Modifier
                         .weight(1f)
                 )
                 StatItem(
                     icon = Icons.Default.Timer,
                     label = "Duration",
-                    value = "2:30",
+                    value = latestSet?.duration?.toString() ?: "0",
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -89,14 +95,14 @@ fun HomeTracking() {
                 StatItem(
                     icon = Icons.AutoMirrored.Filled.TrendingUp,
                     label = "Avg Speed",
-                    value = "8m/s",
+                    value = latestSet?.avgSpeed?.let { "%.1fm/s".format(it) } ?: "0.0m/s",
                     modifier = Modifier
                         .weight(1f)
                 )
                 StatItem(
                     icon = Icons.Default.Star,
                     label = "Lowest Depth",
-                    value = "80\u00B0",
+                    value = "${latestSet?.lowestDepth?.toString() ?: "0"}\u00B0",
                     modifier = Modifier
                         .weight(1f)
                 )

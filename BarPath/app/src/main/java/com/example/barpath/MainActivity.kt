@@ -59,6 +59,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable<Route.MainScreen> {
                             MainScreen(mainScreenViewModel,
+                                trackingScreenViewModel,
                                 onSettingsClick = { nc.navigate(Route.SettingsScreen) },
                                 onPictureClick = {nc.navigate(Route.PictureScreen)},
                                 onAnalysisClick = {nc.navigate(Route.AnalysisScreen)},
@@ -79,6 +80,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<Route.ResultsHistoryScreen> {
                             ResultsHistoryScreen(mainScreenViewModel,
+                                trackingScreenViewModel,
                                 onNavigateBack = { nc.popBackStack() }
                             )
                         }

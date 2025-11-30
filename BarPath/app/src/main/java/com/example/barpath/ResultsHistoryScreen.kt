@@ -28,10 +28,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}){
+fun ResultsHistoryScreen(vm: MainScreenViewModel, trackingVm: TrackingScreenViewModel, onNavigateBack: () -> Unit ={}){
 
 
     val statsList by vm.myStat.collectAsState()
+    val sets by trackingVm.sets.collectAsState(emptyList())
 
     Row(modifier = Modifier
         .fillMaxHeight().fillMaxWidth()) {
@@ -56,15 +57,16 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
         .padding(top = 80.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(statsList) { stat ->
+        items(sets) { set ->
             Card(
                 modifier = Modifier.fillMaxWidth().background(Color.Blue),
                 ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     //Text("Stats for game #${vm.numGames.collectAsState().value}")
-                    Text("reps: ${stat.reps}")
-                    Text("Average time between reps: ${stat.averageTime}")
-                    Text("average depth: ${stat.depthAverage}")
+                    Text("reps: ${set.totalReps}")
+                    Text("duration of set: ${set.duration}")
+                    Text("average speed: ${set.avgSpeed}")
+                    Text("lowest depth: ${set.lowestDepth}")
                     /*
                     Image(
                         painter = painterResource(id = stat.image),
@@ -78,7 +80,7 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, onNavigateBack: () -> Unit ={}
                      */
                 }
                 Button(
-                    onClick = {vm.removeStatistic(stat)},
+                    onClick = {trackingVm.deleteWorkoutSet(set.id)},
                 ) {
                     Text("Delete")
                 }

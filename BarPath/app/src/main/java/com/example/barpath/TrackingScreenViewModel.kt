@@ -9,7 +9,10 @@ import android.hardware.SensorManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.barpath.data.SquatRep
+import com.example.barpath.data.WorkoutSet
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -76,6 +79,29 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     private val _averageDepth = MutableStateFlow(0f)     // in degrees
     val averageDepth = _averageDepth.asStateFlow()
 
+    //DB functionality
+    private val myDB = (app as BarPathApplication).myDB.getInstance()
+    lateinit var sets: Flow<List<WorkoutSet>>
+
+    init {
+        viewModelScope.launch {
+            sets = myDB.getAllWorkoutSets()
+        }
+    }
+
+    fun addWorkoutSet(totalReps: Int, setDuration: Float, avgSpeed: Float, lowestDepth: Float) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newSet = WorkoutSet(0, totalReps, setDuration, avgSpeed, lowestDepth)
+            myDB.insertWorkoutSet(newSet)
+        }
+    }
+
+    fun deleteWorkoutSet(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            myDB.deleteWorkoutSet(id)
+        }
+    }
+    //end of DB functionality (easier to keep track since file is large)
 
     fun startSensors() {
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -189,6 +215,13 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
         _isTracking.value = false
         lastGyroTimestamp = 0L
+
+        val totalReps = currentReps.size
+        val totalDuration = currentReps.sumOf { it.totalDuration }
+        val avgSpeed = totalReps / (totalDuration / 1000f)
+        val lowestDepth = currentReps.minOf { it.maxDepth }
+
+        addWorkoutSet(totalReps, totalDuration.toFloat(), avgSpeed, lowestDepth)
     }
 
     fun detectDescent(pitch: Float) {

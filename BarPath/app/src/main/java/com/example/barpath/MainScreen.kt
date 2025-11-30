@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun MainScreen(
     mainScreenViewModel: MainScreenViewModel,
+    trackingScreenViewModel: TrackingScreenViewModel,
     onPictureClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onAnalysisClick: () -> Unit,
@@ -44,7 +45,7 @@ fun MainScreen(
 
     Column(modifier = Modifier.fillMaxSize()) {
         Header()
-        HomeTracking()
+        HomeTracking(trackingScreenViewModel)
         Column(
             modifier = Modifier
                 .fillMaxSize(),
