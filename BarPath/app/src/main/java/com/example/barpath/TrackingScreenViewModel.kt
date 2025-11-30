@@ -218,8 +218,11 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
         val totalReps = currentReps.size
         val totalDuration = currentReps.sumOf { it.totalDuration }
-        val avgSpeed = totalReps / (totalDuration / 1000f)
-        val lowestDepth = currentReps.minOf { it.maxDepth }
+        val avgSpeed =
+            if (totalDuration > 0) totalReps / (totalDuration / 1000f)
+            else 0f
+        val lowestDepth = currentReps.minOfOrNull { it.maxDepth } ?: 0f
+
 
         addWorkoutSet(totalReps, totalDuration.toFloat(), avgSpeed, lowestDepth)
     }
