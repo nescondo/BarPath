@@ -63,10 +63,10 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, trackingVm: TrackingScreenView
                 ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     //Text("Stats for game #${vm.numGames.collectAsState().value}")
-                    Text("reps: ${set.totalReps}")
-                    Text("duration of set: ${set.duration}")
-                    Text("average speed: ${set.avgSpeed}")
-                    Text("lowest depth: ${set.lowestDepth}")
+                    Text("total reps: ${set.totalReps}")
+                    Text("duration of set: ${trackingVm.convertMillisecondsToMinutesAndSeconds(set.duration)}")
+                    Text("average rep speed: ${String.format("%.1f", set.avgSpeed)} seconds")
+                    Text("lowest depth reached: ${String.format("%.2f", set.lowestDepth)}\u00B0")
                     /*
                     Image(
                         painter = painterResource(id = stat.image),

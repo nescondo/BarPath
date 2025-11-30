@@ -53,12 +53,12 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
     private val minRequiredDepth = 40f
 
-    private val _squatState = MutableStateFlow(SquatState.CALIBRATING)
+    private val _squatState = MutableStateFlow(SquatState.AWAITING)
     val squatStateFlow = _squatState.asStateFlow()
 
     //enum to determine phase of current squat
     enum class SquatState {
-        CALIBRATING, READY, DESCENDING, AT_BOTTOM, ASCENDING
+        AWAITING, CALIBRATING, READY, DESCENDING, AT_BOTTOM, ASCENDING
     }
 
     // individual rep tracking
@@ -78,6 +78,11 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
     private val _averageDepth = MutableStateFlow(0f)     // in degrees
     val averageDepth = _averageDepth.asStateFlow()
+
+    //timer tracking
+    private val _elapsedTime = MutableStateFlow(0L)
+    val elapsedTime = _elapsedTime.asStateFlow()
+
 
     //DB functionality
     private val myDB = (app as BarPathApplication).myDB.getInstance()
@@ -215,10 +220,11 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
         _isTracking.value = false
         lastGyroTimestamp = 0L
+        squatState = SquatState.AWAITING
 
         val totalReps = currentReps.size
         val totalDuration = currentReps.sumOf { it.totalDuration }
-        val avgSpeed = totalReps / (totalDuration / 1000f)
+        val avgSpeed = (totalDuration.toFloat() / totalReps) / 1000
         val lowestDepth = currentReps.minOf { it.maxDepth }
 
         addWorkoutSet(totalReps, totalDuration.toFloat(), avgSpeed, lowestDepth)
@@ -306,12 +312,26 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
     fun processRepData(pitch: Float) {
         when (_squatState.value) {
+            SquatState.AWAITING -> {}
             SquatState.CALIBRATING -> {}
             SquatState.READY -> detectDescent(pitch)
             SquatState.DESCENDING -> detectBottom(pitch)
             SquatState.AT_BOTTOM -> checkAscent(pitch)
             SquatState.ASCENDING -> checkTop(pitch)
         }
+    }
+
+    fun convertMillisecondsToMinutesAndSeconds(milliseconds: Float): String {
+        var formattedTime = "00:00"
+
+        if (milliseconds > 0) {
+            val totalSeconds = (milliseconds / 1000).toInt()
+            val minutes = totalSeconds / 60
+            val seconds = totalSeconds % 60
+
+            formattedTime = String.format("%02d:%02d", minutes, seconds)
+        }
+        return formattedTime
     }
 
 
