@@ -29,11 +29,10 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     val depth by trackingVm.currentDepth.collectAsState()
     val averageTime by trackingVm.averageRepTime.collectAsState()
     val averageDepth by trackingVm.averageDepth.collectAsState()
+    val currentMaxDepth by trackingVm.currentDepth.collectAsState()
 
 
     LaunchedEffect(Unit) { trackingVm.startSensors() }
-
-
 
     Column(
 
@@ -43,10 +42,11 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
             .fillMaxHeight(),
     ) {
         Spacer(Modifier.height(100.dp))
-        Text("Reps: $repCount")
-        Text("Current Depth: $depth")
-        Text("Time Average: $averageTime")
-        Text("Depth Average: $averageDepth")
+        Text("Total Reps: $repCount")
+        Text("Current Depth: ${String.format("%.2f", depth)}\u00B0")
+        Text("Average Rep Completion Time: ${String.format("%.2f", averageTime)}")
+        Text("Average Depth Per Rep: ${String.format("%.2f", averageDepth)}\u00B0")
+        Text("Max Depth Reached: ${String.format("%.2f", currentMaxDepth)}\u00B0")
 
         Spacer(modifier = Modifier.height(20.dp))
 

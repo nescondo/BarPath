@@ -1,18 +1,14 @@
 # BarPath
-A mobile application to help determine technique issues, flaws, and corrections for the barbell back squat.
+A mobile application to help inform the user of statistics based on their squat set.
 
 ## Features
-- Ability to track reps, time between reps, and depth
-- Save user's history of sessions/sets
-- Inform the user of any major inconsistencies between reps
+- Ability to track squat set statistics such as: total reps completed, total duration, maximum depth reached, average rep time, and average depth.
+- Information based on gyroscope showcased with different 'Squat States' to showcase what phase the user is on within a rep
+- Save user's history of sessions/sets in local database
 
 ## Technologies
-- Utilizing <b>Accelerometer and Gyroscope</b> for tracking reps, depth and time between reps
-- <b>RoomDB</b> for local database (for now)
-- Possibly <b>Firebase</b> for a remote database in the future (?)
+- Utilizing <b>Gyroscope</b> for tracking reps, depth and time
+- <b>RoomDB</b> for local database
 
-## Some resources to help us learn CameraX
-- https://developer.android.com/media/samples - sample projects
-- https://developer.android.com/media/camera/camerax/preview - initial setup
-- https://developer.android.com/media/camera/camerax/take-photo - capturing an image
-- https://www.youtube.com/watch?v=pPVZambOuG8 -> a simple video implementation
+## Some resources
+- https://developer.android.com/develop/sensors-and-location/sensors/sensors_motion -> Gyroscope
