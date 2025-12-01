@@ -72,7 +72,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         Button(
             onClick = {
                 mainVm.addStatistic(repCount,averageTime, averageDepth)
-                trackingVm.stopTracking()
+                trackingVm.stopTracking(save = true)
             }
 
         ) {
@@ -86,7 +86,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         }
 
         Button(
-            onClick = {trackingVm.stopTracking()}
+            onClick = {trackingVm.stopTracking(save = false)}
         ) {
             Text("Cancel Tracking")
         }

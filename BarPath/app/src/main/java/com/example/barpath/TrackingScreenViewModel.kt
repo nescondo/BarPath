@@ -1,5 +1,6 @@
 package com.example.barpath
 
+import android.R
 import android.app.Application
 import android.content.Context
 import android.hardware.Sensor
@@ -215,7 +216,7 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
         startCalibration()
     }
 
-    fun stopTracking() {
+    fun stopTracking(save: Boolean) {
         println("Final reps: $currentReps")
 
         _isTracking.value = false
@@ -229,9 +230,11 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
             else 0f
         val lowestDepth = currentReps.minOfOrNull { it.maxDepth } ?: 0f
 
-
-        addWorkoutSet(totalReps, totalDuration.toFloat(), avgSpeed, lowestDepth)
+        if (save){
+            addWorkoutSet(totalReps, totalDuration.toFloat(), avgSpeed, lowestDepth)
+        }
     }
+
 
     fun detectDescent(pitch: Float) {
         val pitchChange = abs(pitch - baselineAngle)
