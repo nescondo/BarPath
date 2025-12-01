@@ -107,6 +107,13 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
             myDB.deleteWorkoutSet(id)
         }
     }
+
+    fun deleteAllWorkoutSets() {
+        viewModelScope.launch(Dispatchers.IO) {
+            myDB.deleteAllWorkoutSets()
+        }
+    }
+
     //end of DB functionality (easier to keep track since file is large)
 
     fun startSensors() {

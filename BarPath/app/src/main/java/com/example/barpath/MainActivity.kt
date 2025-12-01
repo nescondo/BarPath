@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<Route.SettingsScreen> {
                             SettingsScreen(
-                                mainScreenViewModel,
+                                mainScreenViewModel,trackingScreenViewModel,
                                 onNavigateBack = { nc.popBackStack() }
                             )
                         }

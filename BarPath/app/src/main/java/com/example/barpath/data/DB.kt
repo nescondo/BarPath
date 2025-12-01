@@ -36,6 +36,8 @@ interface WorkoutSetDao {
     @Query("SELECT * FROM workoutset ORDER BY id DESC")
     fun getAllWorkoutSets(): Flow<List<WorkoutSet>>
 
+    @Query("DELETE FROM workoutSet")
+    suspend fun deleteAllWorkoutSets()
 }
 
 @Database(

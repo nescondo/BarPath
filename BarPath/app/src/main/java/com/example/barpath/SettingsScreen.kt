@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SettingsScreen(
     vm: MainScreenViewModel,
+    trackVm: TrackingScreenViewModel,
     onNavigateBack: () -> Unit = {}
 ) {
     var themeExpanded by remember { mutableStateOf(false) }
@@ -114,7 +115,7 @@ fun SettingsScreen(
                     .padding(bottom = 12.dp)
                     .fillMaxWidth()
                     .defaultMinSize(minHeight = 86.dp),
-                onClick = { }
+                onClick = {trackVm.deleteAllWorkoutSets() }
             ) {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
