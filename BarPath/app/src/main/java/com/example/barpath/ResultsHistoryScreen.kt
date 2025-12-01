@@ -3,6 +3,7 @@ package com.example.barpath
 import android.R.attr.top
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,8 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -42,15 +46,7 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, trackingVm: TrackingScreenView
             Text("Back")
         }
         Spacer(modifier = Modifier.height(50.dp))
-        /*
-        Button(
-            onClick = { vm.addStatistic() },
 
-            ) {
-            Text("add dummy data")
-        }
-
-         */
     }
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
@@ -59,7 +55,10 @@ fun ResultsHistoryScreen(vm: MainScreenViewModel, trackingVm: TrackingScreenView
     ) {
         items(sets) { set ->
             Card(
-                modifier = Modifier.fillMaxWidth().background(Color.Blue),
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                ),
                 ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     //Text("Stats for game #${vm.numGames.collectAsState().value}")
