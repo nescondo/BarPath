@@ -43,7 +43,7 @@ fun Header() {
             Box (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp),
+                    .padding(1.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box (
