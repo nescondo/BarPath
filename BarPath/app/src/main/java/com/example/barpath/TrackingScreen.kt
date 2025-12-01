@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,7 +33,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     val currentMaxDepth by trackingVm.currentDepth.collectAsState()
 
 
-    LaunchedEffect(Unit) { trackingVm.startSensors() }
+    //LaunchedEffect(Unit) { trackingVm.startSensors() }
 
     Column(
 
@@ -73,6 +74,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
             onClick = {
                 mainVm.addStatistic(repCount,averageTime, averageDepth)
                 trackingVm.stopTracking(save = true)
+                trackingVm.stopSensors()
             }
 
         ) {
@@ -80,18 +82,21 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         }
 
         Button(
-            onClick = {trackingVm.startTracking()}
+            onClick = {trackingVm.startTracking()
+                trackingVm.startSensors()}
         ) {
             Text("Start Tracking")
         }
 
         Button(
-            onClick = {trackingVm.stopTracking(save = false)}
+            onClick = {trackingVm.stopTracking(save = false)
+                trackingVm.stopSensors()}
         ) {
             Text("Cancel Tracking")
         }
         Button(
-            onClick = { onNavigateBack() }
+            onClick = { onNavigateBack()
+            trackingVm.stopSensors()}
         ) {
             Text("Back")
         }
