@@ -1,6 +1,5 @@
 package com.example.barpath
 
-import android.R
 import android.app.Application
 import android.content.Context
 import android.hardware.Sensor
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
 import kotlin.math.abs
 
 class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorEventListener {
@@ -52,7 +52,7 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     private val _isTracking = MutableStateFlow(false)
     val isTracking = _isTracking.asStateFlow()
 
-    private val minRequiredDepth = 40f
+    private val minRequiredDepth = 90f
 
     private val _squatState = MutableStateFlow(SquatState.AWAITING)
     val squatStateFlow = _squatState.asStateFlow()
@@ -65,7 +65,8 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     // individual rep tracking
     private var currentRepStartTime = 0L
     private var currentRepNumber = 0
-    private var currentRepMaxDepth = 0f
+    private val _currentRepMaxDepth = MutableStateFlow(0f)
+    val currentRepMaxDepth = _currentRepMaxDepth.asStateFlow()
     private var depthReached = false
     private val currentReps = mutableListOf<SquatRep>()
     private val _repCount = MutableStateFlow(0)
@@ -80,9 +81,8 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     private val _averageDepth = MutableStateFlow(0f)     // in degrees
     val averageDepth = _averageDepth.asStateFlow()
 
-    //timer tracking
-    private val _elapsedTime = MutableStateFlow(0L)
-    val elapsedTime = _elapsedTime.asStateFlow()
+   //for calibration
+    private var calibrationJob: Job? = null
 
 
     //DB functionality
@@ -138,6 +138,7 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     }
 
     fun stopSensors() {
+        _squatState.value = SquatState.AWAITING
         sensorManager.unregisterListener(this)
     }
 
@@ -197,7 +198,7 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
         _averageRepTime.value = 0f
 
         // wait 5 seconds (to put phone in pocket, set up under barbell, get into position, etc)
-        viewModelScope.launch {
+        calibrationJob = viewModelScope.launch {
             delay(5000)
 
             baselineAngle = 0f //should always be ~0
@@ -226,6 +227,8 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
     fun stopTracking(save: Boolean) {
         println("Final reps: $currentReps")
 
+        calibrationJob?.cancel()
+        _isCalibrating.value = false
         _isTracking.value = false
         lastGyroTimestamp = 0L
         squatState = SquatState.AWAITING
@@ -235,10 +238,16 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
         val avgSpeed =
             if (totalDuration > 0) totalReps / (totalDuration / 1000f)
             else 0f
-        val lowestDepth = currentReps.minOfOrNull { it.maxDepth } ?: 0f
+        val lowestDepth = currentReps.maxOfOrNull { it.maxDepth } ?: 0f
 
         if (save){
             addWorkoutSet(totalReps, totalDuration.toFloat(), avgSpeed, lowestDepth)
+            _repCount.value = 0
+            _currentDepth.value = 0f
+            _averageRepTime.value = 0f
+            _averageDepth.value = 0f
+            _currentRepMaxDepth.value = 0f
+            currentReps.clear()
         }
     }
 
@@ -252,7 +261,7 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
             _squatState.value = SquatState.DESCENDING
 
             currentRepStartTime = System.currentTimeMillis()
-            currentRepMaxDepth = pitchChange
+            _currentRepMaxDepth.value = pitchChange
         }
     }
 
@@ -261,8 +270,8 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
         println("detectBottom: pitchChange=$pitchChange, maxDepth=$currentRepMaxDepth")
 
         // track max depth
-        if (pitchChange > currentRepMaxDepth) {
-            currentRepMaxDepth = pitchChange
+        if (pitchChange > currentRepMaxDepth.value) {
+            _currentRepMaxDepth.value = pitchChange
         }
 
         // Check if minimum depth reached (parallel = 90, 5 degree threshold)
@@ -278,12 +287,12 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
         println("checkAscent: pitchChange=$pitchChange, maxDepth=$currentRepMaxDepth")
 
         // Continue tracking max depth in case they go deeper
-        if (pitchChange > currentRepMaxDepth) {
-            currentRepMaxDepth = pitchChange
+        if (pitchChange > _currentRepMaxDepth.value) {
+            _currentRepMaxDepth.value = pitchChange
         }
 
         // Detect when starting to come back up (10 degree threshold)
-        if (depthReached && pitchChange < currentRepMaxDepth - 10f) {
+        if (depthReached && pitchChange < _currentRepMaxDepth.value - 10f) {
             println("ASCENDING")
             _squatState.value = SquatState.ASCENDING
         }
@@ -302,14 +311,14 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
             val completedRep = SquatRep(
                 repNumber = currentRepNumber,
                 totalDuration = duration,
-                maxDepth = currentRepMaxDepth
+                maxDepth = _currentRepMaxDepth.value
             )
 
             currentReps.add(completedRep)
             currentRepNumber++
             _repCount.value = currentRepNumber
             println("REP COMPLETED: #$currentRepNumber, depth=${currentRepMaxDepth}°, duration=${duration}ms")
-            currentRepMaxDepth = 0f
+            _currentRepMaxDepth.value = 0f
             depthReached = false
             _squatState.value = SquatState.READY
 

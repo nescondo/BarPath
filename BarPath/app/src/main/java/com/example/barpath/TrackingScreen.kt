@@ -30,7 +30,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
     val depth by trackingVm.currentDepth.collectAsState()
     val averageTime by trackingVm.averageRepTime.collectAsState()
     val averageDepth by trackingVm.averageDepth.collectAsState()
-    val currentMaxDepth by trackingVm.currentDepth.collectAsState()
+    val currentMaxDepth by trackingVm.currentRepMaxDepth.collectAsState()
 
 
     //LaunchedEffect(Unit) { trackingVm.startSensors() }
