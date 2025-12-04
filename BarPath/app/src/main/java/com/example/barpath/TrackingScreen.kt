@@ -45,7 +45,7 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         Spacer(Modifier.height(100.dp))
         Text("Total Reps: $repCount")
         Text("Current Depth: ${String.format("%.2f", depth)}\u00B0")
-        Text("Average Rep Completion Time: ${String.format("%.2f", averageTime)}")
+        Text("Average Rep Completion Time: ${String.format("%.2f", averageTime/1000f)} seconds")
         Text("Average Depth Per Rep: ${String.format("%.2f", averageDepth)}\u00B0")
         Text("Max Depth Reached: ${String.format("%.2f", currentMaxDepth)}\u00B0")
 
@@ -54,13 +54,6 @@ fun TrackingScreen (mainVm: MainScreenViewModel, trackingVm: TrackingScreenViewM
         Text("Tracking? $isTracking")
         Text("Calibrating? $isCalibrating")
         Text("State: $squatState")
-
-        //Text("Accelerometer data:",color = mainVm._color2.value)
-        //Text(
-          //  text = "x: %.3f   y: %.3f   z: %.3f".format(accel[0], accel[1], accel[2]),
-         //   color = mainVm._color2.value
-      //  )
-
 
         Spacer(modifier = Modifier.height(20.dp))
 
