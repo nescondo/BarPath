@@ -242,13 +242,14 @@ class TrackingScreenViewModel(app: Application) : AndroidViewModel(app), SensorE
 
         if (save){
             addWorkoutSet(totalReps, totalDuration.toFloat(), avgSpeed, lowestDepth)
-            _repCount.value = 0
-            _currentDepth.value = 0f
-            _averageRepTime.value = 0f
-            _averageDepth.value = 0f
-            _currentRepMaxDepth.value = 0f
-            currentReps.clear()
         }
+
+        _repCount.value = 0
+        _currentDepth.value = 0f
+        _averageRepTime.value = 0f
+        _averageDepth.value = 0f
+        _currentRepMaxDepth.value = 0f
+        currentReps.clear()
     }
 
 
