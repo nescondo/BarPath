@@ -12,3 +12,5 @@ A mobile application to help inform the user of statistics based on their squat 
 
 ## Some resources
 - https://developer.android.com/develop/sensors-and-location/sensors/sensors_motion -> Gyroscope
+- Tutorial: https://github.com/nescondo/BarPath/wiki/Motion-Sensor-Tutorial
+- Slides: https://docs.google.com/presentation/d/185wlw_69u53DAjBDj2cNK6rg14mdn5Nr0DCQdAy6xKA/edit
